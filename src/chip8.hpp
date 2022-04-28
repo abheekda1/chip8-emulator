@@ -1,4 +1,3 @@
-extern unsigned char chip8_fontset[80];
 #include <fstream>
 #include <iostream>
 #include <sstream>

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <random>
 
-unsigned char chip8_fontset[80] = {
+const unsigned char chip8_fontset[80] = {
     0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
     0x20, 0x60, 0x20, 0x20, 0x70, // 1
     0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
@@ -22,6 +22,8 @@ unsigned char chip8_fontset[80] = {
     0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
     0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 };
+const unsigned short FONT_OFFSET = 0x50;
+const unsigned short ROM_OFFSET = 0x200;
 
 // constructors
 chip8::chip8() {}
@@ -40,7 +42,7 @@ void chip8::loadGame(const char *infile) {
   char current_byte = 0;
   int idx = 0;
   while (in.get(current_byte)) {
-    memory[0x200 + idx] = current_byte;
+    memory[idx + ROM_OFFSET] = current_byte;
     idx++;
   }
 }
@@ -73,7 +75,7 @@ void chip8::init() {
 
   // set fonts
   for (int i = 0; i < 80; i++)
-    memory[i + 0x50] = chip8_fontset[i];
+    memory[i + FONT_OFFSET] = chip8_fontset[i];
 
   // set an rng seed
   srand(time(0));
