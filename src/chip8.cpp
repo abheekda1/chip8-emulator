@@ -23,16 +23,18 @@ unsigned char chip8_fontset[80] = {
     0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 };
 
+// constructors
 chip8::chip8() {}
-
 chip8::chip8(const char *infile, unsigned short clkspd) {
   clockspeed = clkspd;
   loadGame(infile);
   init();
 }
 
+// destructor
 chip8::~chip8() {}
 
+// function to load game from filename
 void chip8::loadGame(const char *infile) {
   std::ifstream in(infile, std::ios_base::binary);
   char current_byte = 0;
@@ -43,6 +45,8 @@ void chip8::loadGame(const char *infile) {
   }
 }
 
+// initialize emulator
+// clears a lot of things mostly
 void chip8::init() {
   // clear all objects
   for (auto &byte : memory)
@@ -52,37 +56,49 @@ void chip8::init() {
   for (auto &pixel_x : display)
     for (auto &pixel_x_y : pixel_x)
       pixel_x_y = 0; // set each pixel to 0/false
-  pc = 0x200;        // set pc to 512 (start of program)
-  I = 0;
-  // for (auto &item : stack)
-  // item = 0; // remove all stack items
+
+  pc = 0x200; // set pc to 512 (start of program)
+  I = 0;      // set index register to 0
+
+  // clear stack and set size
   stack.clear();
   stack.resize(16);
+
+  // timers
   delay_timer = 0;
   sound_timer = 0;
+
+  // reset opcode
   opcode = 0;
 
-  // Set fonts
-  for (int i = 0; i < 80; i++) {
+  // set fonts
+  for (int i = 0; i < 80; i++)
     memory[i + 0x50] = chip8_fontset[i];
-  }
 
+  // set an rng seed
   srand(time(0));
 
+  // create log (this instance isn't used but it erases the data within the
+  // current log)
   std::ofstream log("c8.log");
-  for (int i = 0x050; i <= 0x09f; i++) {
-    log << std::hex << (int)memory[i] << std::dec << " ";
-  }
 }
 
+// fetches the next opcode
 void chip8::fetch() {
+  // combine the current byte and the next to form an instruction
   opcode = (memory[pc] << 8) | (memory[pc + 1]);
+
+  // increment pc here because it will most likely be updated within every
+  // switch-case
   pc += 2;
 }
 
+// decode/execute the instruction in opcode, should be called after fetch
 void chip8::decode() {
-  std::ofstream log("c8.log", std::ios_base::app);
+  std::ofstream log("c8.log", std::ios_base::app); // log to be used for reasons
   log << opcode << std::endl;
+
+  // big opcode switch-case statement
   switch (opcode & 0xf000) {
   case 0x0000:
     switch (opcode) {
@@ -240,7 +256,7 @@ void chip8::decode() {
         memory[I + i] = V[i];
       }
 
-      I += ((opcode & 0x0f00) >> 8) + 1;
+      // I += ((opcode & 0x0f00) >> 8) + 1;
       break;
     case 0x0065:
       for (int i = 0; i < (V[(opcode & 0x0f00) >> 8]) + 1; i++) {
