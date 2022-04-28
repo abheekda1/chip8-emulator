@@ -19,7 +19,10 @@ int main(int argc, char *argv[]) {
   nodelay(stdscr, true);
   cbreak();
   noecho();
-  clear();
+
+#ifdef DEBUG 
+  std::string opcodeList;
+#endif
 
   for (;;) {
     auto current_time = std::chrono::system_clock::now();
@@ -37,19 +40,24 @@ int main(int argc, char *argv[]) {
     c8.decrementTimers();
     c8.fetch();
     c8.decode();
+    clear();
+#ifdef DEBUG // TODO: laggy
+    std::stringstream ss;
+    ss << std::hex << c8.getOpcode() << std::dec << std::endl;
+    opcodeList += ss.str();
+    if (opcodeList.length() > 50) {
+      opcodeList = opcodeList.substr(5);
+    }
+    printw(c8.getScreen().c_str());
+    refresh();
+    //printw(ss.str().c_str());
+    printw(opcodeList.c_str());
+#else
     if (c8.getScreenRefresh()) {
-      clear();
       printw(c8.getScreen().c_str());
-      //      std::stringstream ss;
-      //      ss << std::hex << c8.getOpcode() << std::dec << std::endl;
-      //      opcodeList += ss.str();
-      //      if (opcodeList.length() > 50) {
-      //        opcodeList = opcodeList.substr(5);
-      //      }
-      // printw(ss.str().c_str());
-      //      printw(opcodeList.c_str());
       refresh();
       c8.disableScreenRefresh();
+#endif
 
       char key = getch();
       switch (key) {
@@ -115,7 +123,9 @@ int main(int argc, char *argv[]) {
       if (c8.toBeep()) {
         beep();
       }
+#ifndef DEBUG // closing parenthesis for the screen refresh if-statement
     }
+#endif
     c8.decrementTimers();
   }
 }
