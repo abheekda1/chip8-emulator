@@ -104,7 +104,7 @@ void chip8::decode() {
   case 0x2000: {
     stack.push_back(pc);
     pc = (opcode & 0x0fff);
-	break;
+    break;
   }
   case 0x3000: {
     if (V[(opcode & 0x0f00) >> 8] == (opcode & 0x00ff)) {
@@ -220,7 +220,7 @@ void chip8::decode() {
         pc += 2;
       break;
     }
-	break;
+    break;
   }
   case 0xf000: {
     switch (opcode & 0x00ff) {
@@ -233,22 +233,22 @@ void chip8::decode() {
     case 0x0018:
       sound_timer = V[(opcode & 0x0f00) >> 8];
       break;
-	case 0x0029:
-		I = V[(opcode & 0x0F00) >> 8] * 0x5;
-	case 0x0055:
-		for (int i = 0; i < (V[(opcode & 0x0f00) >> 8]) + 1; i++) {
-			memory[I + i] = V[i];
-		}
+    case 0x0029:
+      I = V[(opcode & 0x0F00) >> 8] * 0x5;
+    case 0x0055:
+      for (int i = 0; i < (V[(opcode & 0x0f00) >> 8]) + 1; i++) {
+        memory[I + i] = V[i];
+      }
 
-		I += ((opcode & 0x0f00) >> 8) + 1;
-		break;
+      I += ((opcode & 0x0f00) >> 8) + 1;
+      break;
     case 0x0065:
-		for (int i = 0; i < (V[(opcode & 0x0f00) >> 8]) + 1; i++) {
-			V[i] = memory[I + i];
-		}
+      for (int i = 0; i < (V[(opcode & 0x0f00) >> 8]) + 1; i++) {
+        V[i] = memory[I + i];
+      }
 
-		// I += ((opcode & 0x0f00) >> 8) + 1;
-		break;
+      // I += ((opcode & 0x0f00) >> 8) + 1;
+      break;
     }
     break;
   }
