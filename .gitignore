@@ -1,0 +1,18 @@
+# game binaries
+*.ch8
+*.rom
+
+# temp binaries + logs
+a.out
+c8
+*.log
+
+# clangd + cmake
+.cache/
+build/
+
+# backup files
+*.bak
+
+# debugging
+core
