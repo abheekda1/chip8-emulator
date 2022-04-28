@@ -12,3 +12,5 @@ find_package(Curses REQUIRED)
 add_executable(c8 ${SOURCE})
 
 target_link_libraries(c8 ${CURSES_LIBRARIES})
+
+install(TARGETS c8)
