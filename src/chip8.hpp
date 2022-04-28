@@ -53,6 +53,7 @@ public:
     key_code = kc;
   }
   inline void setKeyUp() { key_down = false; }
+  inline unsigned short getClockspeed() { return clockspeed; }
   // void execute();
 private:
   unsigned char memory[0xfff]; // 4096 bytes of memory

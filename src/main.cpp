@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
-  chip8 c8{argv[1]};
+  chip8 c8{argv[1], argc >= 3 ? static_cast<unsigned short>(atoi(argv[2])) : static_cast<unsigned short>(300)};
 
   setlocale(LC_ALL, "");
   initscr();
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
                      current_time.time_since_epoch())
                      .count() -
                  c8.getLastUpdated();
-    if (timer < (1000 / 300)) {
+    if (timer < (1000 / c8.getClockspeed())) {
       continue;
     }
     c8.setLastUpdated(std::chrono::duration_cast<std::chrono::milliseconds>(
