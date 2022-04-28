@@ -5,9 +5,6 @@
 #include <iostream>
 #include <ncurses.h>
 
-// std::stringstream ss;
-std::string opcodeList;
-
 int main(int argc, char *argv[]) {
   if (argc < 2) {
     std::cout << "Add game path as an argument" << std::endl;
