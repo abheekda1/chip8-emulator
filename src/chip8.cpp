@@ -113,6 +113,9 @@ void chip8::decode() {
       pc = stack.back();
       stack.pop_back();
       break;
+    default:
+      log << "Unknown opcode 0x" << std::hex << opcode << std::dec << std::endl;
+      break;
     }
     break;
   case 0x1000: {
@@ -166,8 +169,16 @@ void chip8::decode() {
       break;
     case 0x0004:
       V[(opcode & 0x0f00) >> 8] += V[(opcode & 0x00f0) >> 4];
+      if (V[(opcode & 0x00f0) >> 4] > (0xff - V[(opcode & 0x0f00) >> 8]))
+        V[0xf] = 1;
+      else
+        V[0xf] = 0;
       break;
     case 0x0005:
+      if (V[(opcode & 0x00f0) >> 4] > V[(opcode & 0x0f00) >> 8])
+        V[0xf] = 0;
+      else
+        V[0xf] = 1;
       V[(opcode & 0x0f00) >> 8] -= V[(opcode & 0x00f0) >> 4];
       break;
     case 0x0006: {
@@ -180,8 +191,15 @@ void chip8::decode() {
       break;
     }
     case 0x0007:
+      if (V[(opcode & 0x0f00) >> 8] > V[(opcode & 0x00f0) >> 4])
+        V[0xf] = 0;
+      else
+        V[0xf] = 1;
       V[(opcode & 0x0f00) >> 8] =
           V[(opcode & 0x00f0) >> 4] - V[(opcode & 0x0f00) >> 8];
+      break;
+    default:
+      log << "Unknown opcode: " << std::hex << opcode << std::dec << std::endl;
       break;
     }
     break;
@@ -237,6 +255,9 @@ void chip8::decode() {
       if (V[(opcode & 0x0f00) >> 8] != key_code || key_down)
         pc += 2;
       break;
+    default:
+      log << "Unknown opcode: " << std::hex << opcode << std::dec << std::endl;
+      break;
     }
     break;
   }
@@ -267,11 +288,14 @@ void chip8::decode() {
 
       // I += ((opcode & 0x0f00) >> 8) + 1;
       break;
+    default:
+      log << "Unknown opcode: " << std::hex << opcode << std::dec << std::endl;
+      break;
     }
     break;
   }
   default:
-    log << "Unknown opcode: " << std::hex << opcode << std::dec << std::endl;
+    log << "Unknown opcode 0x" << std::hex << opcode << std::dec << std::endl;
     break;
   }
 }
