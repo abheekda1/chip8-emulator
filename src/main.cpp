@@ -14,9 +14,7 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
-  chip8 c8;
-  c8.init();
-  c8.loadGame(argv[1]);
+  chip8 c8{argv[1]};
 
   setlocale(LC_ALL, "");
   initscr();

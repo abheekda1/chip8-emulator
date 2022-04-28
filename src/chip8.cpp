@@ -28,9 +28,9 @@ const unsigned short ROM_OFFSET = 0x200;
 // constructors
 chip8::chip8() {}
 chip8::chip8(const char *infile, unsigned short clkspd) {
+  init();
   clockspeed = clkspd;
   loadGame(infile);
-  init();
 }
 
 // destructor

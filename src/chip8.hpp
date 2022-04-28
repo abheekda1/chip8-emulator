@@ -7,7 +7,7 @@
 class chip8 {
 public:
   chip8();
-  chip8(const char *infile, unsigned short clockspeed);
+  chip8(const char *infile, unsigned short clockspeed = 300);
 
   ~chip8();
 
@@ -65,5 +65,5 @@ private:
   unsigned long last_updated = 0;
   bool key_down;
   unsigned char key_code;
-  unsigned short clockspeed = 60;
+  unsigned short clockspeed = 300;
 };
