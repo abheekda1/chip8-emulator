@@ -20,8 +20,8 @@ int main(int argc, char *argv[]) {
 
   setlocale(LC_ALL, "");
   initscr();
-  curs_set(0);
-  nodelay(stdscr, TRUE);
+  curs_set(false);
+  nodelay(stdscr, true);
   cbreak();
   noecho();
   clear();
@@ -105,6 +105,12 @@ int main(int argc, char *argv[]) {
         break;
       case 'v':
         c8.setKeyDown(0x0f);
+        break;
+      case ' ':
+        nodelay(stdscr, false);
+        if (getch() == ' ') {
+          nodelay(stdscr, true);
+        }
         break;
       case ERR:
         c8.setKeyUp();
