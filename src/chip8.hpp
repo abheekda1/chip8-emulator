@@ -22,7 +22,7 @@ public:
     std::stringstream ss;
     for (int i = 0; i < 32; i++) {
       for (int j = 0; j < 64; j++) {
-        std::string temp = display[j][i] ? " " : "H";
+        std::string temp = display[j][i] ? " " : "#";
         ss << temp;
       }
       ss << '\n';
