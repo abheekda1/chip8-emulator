@@ -1,3 +1,6 @@
+#ifndef CHIP_8_HPP
+#define CHIP_8_HPP
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -67,3 +70,5 @@ private:
   unsigned char key_code;
   unsigned short clockspeed = 300;
 };
+
+#endif
