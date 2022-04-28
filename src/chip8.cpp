@@ -98,7 +98,6 @@ void chip8::fetch() {
 // decode/execute the instruction in opcode, should be called after fetch
 void chip8::decode() {
   std::ofstream log("c8.log", std::ios_base::app); // log to be used for reasons
-  log << opcode << std::endl;
 
   // big opcode switch-case statement
   switch (opcode & 0xf000) {
